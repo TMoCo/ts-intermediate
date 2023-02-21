@@ -78,19 +78,20 @@ console.log(
   `User ${userId} has completed ${filteredByComplete.data.length} todos.`
 );
 
-todos.data.push({
-  userId: -1,
-  id: -1,
-  title: 'foo',
-  completed: 'archived',
-});
-
-todos.data.push({
-  userId: -1,
-  id: -1,
-  title: 'bar',
-  completed: 'pending',
-});
+todos.data.push(
+  {
+    userId: -1,
+    id: -1,
+    title: 'foo',
+    completed: 'archived',
+  },
+  {
+    userId: -1,
+    id: -1,
+    title: 'bar',
+    completed: 'pending',
+  }
+);
 
 const archivedTodos = todos.filterBy('completed', 'archived');
 console.log(
