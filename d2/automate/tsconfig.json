@@ -4,6 +4,7 @@
       "ES2020",
       "DOM"
     ],
+    // "module": "",
     "target": "ES2020",
     "moduleResolution": "node",
     "resolveJsonModule": true,
