@@ -9,44 +9,32 @@ interface Todo {
   completed: boolean;
 }
 
-const addUsers = (newUser: User) => {};
-
-const addTodos = (newTodo: Todo) => {
-  const user = document.getElementById('root');
-  const todo = document.createElement('p');
-  todo.innerHTML = `Completed todo ${newTodo.id} titles ${newTodo.title} `;
-};
-
-const handleUserTodos = (response: Array<Todo> | Error) => {
-  if (response instanceof Error) {
-    console.log('Error');
-    return;
-  }
-
-  response
-    .filter((todo) => todo.completed)
-    .forEach((todo) => {
-      addTodos(todo);
-    });
-  return response;
-};
-
-const addUsersToDom = (users: Array<User>) => {
+const addUserDataToDom = (users: Array<User>) => {
   const root = document.getElementById('root');
   root.innerHTML = `<ul>${users
-    .map(async (user) => {
-      const userHtml = `<li><div id="${user.id}"><h2>${user.username}</h2><p>${user.name}</p></div></li>`;
-      await fetchArray<Todo>(`${ApiEndPointUrl}users/${user.id}/posts`).then();
-      return userHtml.co;
+    .map((user) => {
+      return `<li><div id="${user.id}"><h2>${user.username}</h2><p>${user.name}</p></div></li>`;
     })
     .join('')}</ul>`;
+  return users;
 };
 
-const addTodosToDom = (todos: Array<Todo>) => {
-  todos.forEach((todo) => {
-    const userDiv = document.getElementById(`${todo.userId}`);
-    userDiv.innerHTML.concat(
-      `<li><div id="${user.id}"><h2>${user.username}</h2><p>${user.name}</p></div></li>`
+const addTodosToDom = (users: Array<User>) => {
+  users.forEach((user) => {
+    fetchArray<Todo>(`${ApiEndPointUrl}users/${user.id}/todos`).then(
+      (response) => {
+        if (response instanceof Error) {
+          console.log('Error');
+          return;
+        }
+        const userDiv = document.getElementById(`${user.id}`);
+        userDiv.innerHTML = `${userDiv.innerHTML}<h3>ToDos:</h3><ul>${response
+          .filter((todo) => !todo.completed)
+          .map(
+            (todo) => `<li><div id="${todo.id}"><p>${todo.title}</p></div></li>`
+          )
+          .join('')}</ul>`;
+      }
     );
   });
 };
@@ -61,6 +49,6 @@ const fetchArray = async <T>(url: string): Promise<Array<T> | Error> => {
 };
 
 fetchArray<User>(`${ApiEndPointUrl}users`)
-  .then(addUsersToDom)
-  .then()
+  .then(addUserDataToDom)
+  .then(addTodosToDom)
   .catch(() => {});
