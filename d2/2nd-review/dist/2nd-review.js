@@ -20,7 +20,7 @@ const handleUserTodos = (response) => {
 const addUsersToDom = (response) => {
     const root = document.getElementById('root');
     root.innerHTML = `<ul>${response
-        .map((user) => `<li>${user.username}</li>`)
+        .map((user) => `<li><div><h2>${user.username}</h2><p>${user.name}</p></div></li>`)
         .join('')}</ul>`;
 };
 const addTodosToDom = () => { };

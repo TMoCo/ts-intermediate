@@ -31,14 +31,25 @@ const handleUserTodos = (response: Array<Todo> | Error) => {
   return response;
 };
 
-const addUsersToDom = (response: Array<User>) => {
+const addUsersToDom = (users: Array<User>) => {
   const root = document.getElementById('root');
-  root.innerHTML = `<ul>${response
-    .map((user) => `<li>${user.username}</li>`)
+  root.innerHTML = `<ul>${users
+    .map(async (user) => {
+      const userHtml = `<li><div id="${user.id}"><h2>${user.username}</h2><p>${user.name}</p></div></li>`;
+      await fetchArray<Todo>(`${ApiEndPointUrl}users/${user.id}/posts`).then();
+      return userHtml.co;
+    })
     .join('')}</ul>`;
 };
 
-const addTodosToDom = () => {};
+const addTodosToDom = (todos: Array<Todo>) => {
+  todos.forEach((todo) => {
+    const userDiv = document.getElementById(`${todo.userId}`);
+    userDiv.innerHTML.concat(
+      `<li><div id="${user.id}"><h2>${user.username}</h2><p>${user.name}</p></div></li>`
+    );
+  });
+};
 
 const fetchArray = async <T>(url: string): Promise<Array<T> | Error> => {
   try {
@@ -51,5 +62,5 @@ const fetchArray = async <T>(url: string): Promise<Array<T> | Error> => {
 
 fetchArray<User>(`${ApiEndPointUrl}users`)
   .then(addUsersToDom)
-  .then(addTodosToDom)
+  .then()
   .catch(() => {});
