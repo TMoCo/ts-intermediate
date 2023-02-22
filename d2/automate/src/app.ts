@@ -22,7 +22,15 @@ import Photo from './Photo';
       if (response instanceof Error) {
         console.log('Error');
       } else {
-        console.log(`We received ${response}`);
+        const c = document.getElementById('content'); // this is hte 'article' tag
+        const i = document.getElementById('thumbnail'); // this is hte 'img' tag
+        console.log(c);
+        console.log(i);
+        c.innerHTML = response[0]['title']; // if TS cannot resolve properties, use square-bracket notation
+        i.setAttribute('src', response[0].thumbnailUrl); // if TS can resolve, use dot-notation
+        i.setAttribute('title', response[0].title);
+        i.setAttribute('alt', response[0].title);
+        // console.log(`We received ${response}`);
       }
     })
     .catch(() => {});
